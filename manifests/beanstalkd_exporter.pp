@@ -33,7 +33,7 @@
 #  Should puppet manage the service? (default true)
 # @param manage_user
 #  Whether to create user or rely on external code for that
-# @param os
+# @param os_type
 #  Operating system (linux is the only one supported)
 # @param package_ensure
 #  If package, then use this for package ensure default 'latest'
@@ -80,7 +80,7 @@ class prometheus::beanstalkd_exporter (
   Boolean $manage_group                                      = true,
   Boolean $manage_service                                    = true,
   Boolean $manage_user                                       = true,
-  String[1] $os                                              = downcase($facts['kernel']),
+  String[1] $os_type                                         = downcase($facts['kernel']),
   Optional[String[1]] $extra_options                         = undef,
   Variant[Undef,String] $download_url                        = undef,
   String[1] $arch                                            = $prometheus::real_arch,
@@ -95,11 +95,11 @@ class prometheus::beanstalkd_exporter (
 ) inherits prometheus {
   # Download url differs between 1.0.0 and 1.0.1 onwards
   if( versioncmp($version, '1.0.0') < 1 ) {
-    $real_download_url = pick($download_url,"${download_url_base}/download/${version}/${package_name}-${version}.${os}-${arch}.${download_extension}")
+    $real_download_url = pick($download_url,"${download_url_base}/download/${version}/${package_name}-${version}.${os_type}-${arch}.${download_extension}")
     $options = "-listen-address ${exporter_listen} -config ${config} -mapping-config ${mapping_config} ${extra_options}"
     $real_file_ensure = 'file'
   } else {
-    $real_download_url = pick($download_url,"${download_url_base}/download/${version}/${package_name}-${version}.${os}-${arch}")
+    $real_download_url = pick($download_url,"${download_url_base}/download/${version}/${package_name}-${version}.${os_type}-${arch}")
     $options = "-web.listen-address ${exporter_listen} -beanstalkd.address ${beanstalkd_address} ${extra_options}"
     $real_file_ensure = 'absent'
   }
@@ -124,7 +124,7 @@ class prometheus::beanstalkd_exporter (
     install_method     => $install_method,
     version            => $version,
     download_extension => $download_extension,
-    os                 => $os,
+    os_type            => $os_type,
     arch               => $arch,
     real_download_url  => $real_download_url,
     bin_dir            => $bin_dir,

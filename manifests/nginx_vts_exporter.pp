@@ -71,7 +71,7 @@ class prometheus::nginx_vts_exporter (
   Boolean          $manage_group                             = true,
   Boolean          $manage_service                           = true,
   Boolean          $manage_user                              = true,
-  String           $os                                       = downcase($facts['kernel']),
+  String           $os_type                                  = downcase($facts['kernel']),
   String           $extra_options                            = '', # lint:ignore:params_empty_string_assignment
   Optional[Prometheus::Uri] $download_url                    = undef,
   String           $arch                                     = $prometheus::real_arch,
@@ -96,7 +96,7 @@ class prometheus::nginx_vts_exporter (
     install_method     => $install_method,
     version            => $version,
     download_extension => $download_extension,
-    os                 => $os,
+    os_type            => $os_type,
     arch               => $arch,
     real_download_url  => $real_download_url,
     bin_dir            => $bin_dir,

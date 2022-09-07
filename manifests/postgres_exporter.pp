@@ -81,7 +81,7 @@ class prometheus::postgres_exporter (
   Boolean $manage_group                                      = true,
   Boolean $manage_service                                    = true,
   Boolean $manage_user                                       = true,
-  String[1] $os                                              = downcase($facts['kernel']),
+  String[1] $os_type                                         = downcase($facts['kernel']),
   String $options                                            = '', # lint:ignore:params_empty_string_assignment
   Optional[Prometheus::Uri] $download_url                    = undef,
   Optional[String] $postgres_pass                            = undef,
@@ -170,7 +170,7 @@ class prometheus::postgres_exporter (
     version            => $version,
     download_extension => $download_extension,
     env_vars           => $env_vars,
-    os                 => $os,
+    os_type            => $os_type,
     arch               => $arch,
     bin_dir            => $bin_dir,
     notify_service     => $notify_service,

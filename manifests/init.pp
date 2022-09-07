@@ -288,7 +288,7 @@ class prometheus (
   Hash $extra_alerts                                                            = {},
   Hash $config_hash                                                             = {},
   Hash $config_defaults                                                         = {},
-  String[1] $os                                                                 = downcase($facts['kernel']),
+  String[1] $os_type                                                            = downcase($facts['kernel']),
   Optional[Variant[Stdlib::HTTPUrl, Stdlib::Unixpath, String[1]]] $external_url = undef,
   Array[Hash[String[1], Any]] $collect_scrape_jobs                              = [],
   Optional[String[1]] $collect_tag                                              = undef,

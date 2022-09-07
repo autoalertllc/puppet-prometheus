@@ -45,7 +45,7 @@
 # @param manage_user
 #  Whether to create user or rely on external code for that
 #
-# @param os
+# @param os_type
 #  Operating system (linux is the only one supported)
 #
 # @param package_ensure
@@ -112,7 +112,7 @@ class prometheus::bind_exporter (
   Boolean $manage_group                                      = true,
   Boolean $manage_service                                    = true,
   Boolean $manage_user                                       = true,
-  String[1] $os                                              = $prometheus::os,
+  String[1] $os_type                                         = $prometheus::os_type,
   Optional[String[1]] $extra_options                         = undef,
   Hash[String, Scalar] $env_vars                             = {},
   String $download_extension                                 = 'tar.gz',
@@ -128,7 +128,7 @@ class prometheus::bind_exporter (
   Optional[Enum['none', 'http', 'https', 'ftp']] $proxy_type = undef,
 ) inherits prometheus {
   #Please provide the download_url for versions < 0.9.0
-  $real_download_url    = pick($download_url,"${download_url_base}/download/v${version}/${package_name}-${version}.${os}-${arch}.${download_extension}")
+  $real_download_url    = pick($download_url,"${download_url_base}/download/v${version}/${package_name}-${version}.${os_type}-${arch}.${download_extension}")
   $notify_service = $restart_on_change ? {
     true    => Service[$service_name],
     default => undef,
@@ -138,7 +138,7 @@ class prometheus::bind_exporter (
     install_method     => $install_method,
     version            => $version,
     download_extension => $download_extension,
-    os                 => $os,
+    os_type            => $os_type,
     arch               => $arch,
     real_download_url  => $real_download_url,
     bin_dir            => $bin_dir,

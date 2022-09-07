@@ -68,7 +68,7 @@ class prometheus::openldap_exporter (
   Boolean $manage_group                                      = true,
   Boolean $manage_service                                    = true,
   Boolean $manage_user                                       = true,
-  String[1] $os                                              = downcase($facts['kernel']),
+  String[1] $os_type                                         = downcase($facts['kernel']),
   String $options                                            = '', # lint:ignore:params_empty_string_assignment
   Optional[Prometheus::Uri] $download_url                    = undef,
   Stdlib::Absolutepath $bin_dir                              = $prometheus::bin_dir,
@@ -120,7 +120,7 @@ class prometheus::openldap_exporter (
     install_method     => $install_method,
     version            => $version,
     download_extension => $real_download_extension,
-    os                 => $os,
+    os_type            => $os_type,
     real_download_url  => $real_download_url,
     extract_path       => $extract_path,
     extract_command    => $extract_command,

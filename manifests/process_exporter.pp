@@ -25,7 +25,7 @@
 #  Should puppet manage the service? (default true)
 # @param manage_user
 #  Whether to create user or rely on external code for that
-# @param os
+# @param os_type
 #  Operating system (linux is the only one supported)
 # @param package_ensure
 #  If package, then use this for package ensure default 'latest'
@@ -59,7 +59,7 @@
 #  class { 'prometheus::process_exporter':
 #    version                => '0.6.0',
 #    arch                   => 'amd64',
-#    os                     => 'linux',
+#    os_type                => 'linux',
 #    bin_dir                => '/usr/local/bin',
 #    install_method         => 'url',
 #    hash_watched_processes => {
@@ -96,7 +96,7 @@ class prometheus::process_exporter (
   Boolean $manage_group                                      = true,
   Boolean $manage_service                                    = true,
   Boolean $manage_user                                       = true,
-  String[1] $os                                              = downcase($facts['kernel']),
+  String[1] $os_type                                         = downcase($facts['kernel']),
   Optional[String[1]] $extra_options                         = undef,
   String[1] $config_mode                                     = $prometheus::config_mode,
   Optional[Prometheus::Uri] $download_url                    = undef,
@@ -110,7 +110,7 @@ class prometheus::process_exporter (
   Optional[String[1]] $proxy_server                          = undef,
   Optional[Enum['none', 'http', 'https', 'ftp']] $proxy_type = undef,
 ) inherits prometheus {
-  $filename = "${package_name}-${version}.${os}-${arch}.${download_extension}"
+  $filename = "${package_name}-${version}.${os_type}-${arch}.${download_extension}"
   $real_download_url = pick($download_url,"${download_url_base}/download/v${version}/${filename}")
   $notify_service = $restart_on_change ? {
     true    => Service[$service_name],
@@ -138,7 +138,7 @@ class prometheus::process_exporter (
     install_method     => $install_method,
     version            => $version,
     download_extension => $download_extension,
-    os                 => $os,
+    os_type            => $os_type,
     arch               => $arch,
     real_download_url  => $real_download_url,
     bin_dir            => $bin_dir,

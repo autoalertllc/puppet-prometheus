@@ -105,7 +105,7 @@ class prometheus::postfix_exporter (
     install_method     => $install_method,
     version            => $version,
     download_extension => $download_extension,
-    os                 => $prometheus::os,
+    os_type            => $prometheus::os_type,
     arch               => $prometheus::real_arch,
     real_download_url  => $real_download_url,
     bin_dir            => $prometheus::bin_dir,
