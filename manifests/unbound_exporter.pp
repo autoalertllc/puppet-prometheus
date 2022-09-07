@@ -27,7 +27,7 @@
 #  Should puppet manage the service?
 # @param manage_user
 #  Whether to create user or rely on external code for that
-# @param os
+# @param os_type
 #  Operating system (linux is the only one supported)
 # @param package_ensure
 #  If package, then use this for package ensure
@@ -89,7 +89,7 @@ class prometheus::unbound_exporter (
   Optional[String[1]] $proxy_server                          = undef,
   Optional[Enum['none', 'http', 'https', 'ftp']] $proxy_type = undef,
 ) inherits prometheus {
-  $real_download_url = pick($download_url,"${download_url_base}/download/${version}/${package_name}-${version}_${os}_${arch}")
+  $real_download_url = pick($download_url,"${download_url_base}/download/${version}/${package_name}-${version}_${os_type}_${arch}")
 
   $notify_service = $restart_on_change ? {
     true    => Service[$service_name],

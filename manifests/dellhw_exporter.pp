@@ -25,7 +25,7 @@
 #  Should puppet manage the service? (default true)
 # @param manage_user
 #  Whether to create user or rely on external code for that
-# @param os
+# @param os_type
 #  Operating system (linux is the only one supported)
 # @param package_ensure
 #  If package, then use this for package ensure default 'latest'
@@ -88,7 +88,7 @@ class prometheus::dellhw_exporter (
   Optional[String[1]] $proxy_server                          = undef,
   Optional[Enum['none', 'http', 'https', 'ftp']] $proxy_type = undef,
 ) inherits prometheus {
-  $real_download_url = pick($download_url,"${download_url_base}/download/v${version}/dellhw_exporter-${version}.${os}-${arch}.${download_extension}")
+  $real_download_url = pick($download_url,"${download_url_base}/download/v${version}/dellhw_exporter-${version}.${os_type}-${arch}.${download_extension}")
 
   $notify_service = $restart_on_change ? {
     true    => Service[$service_name],
@@ -127,7 +127,7 @@ class prometheus::dellhw_exporter (
     scrape_job_name    => $scrape_job_name,
     scrape_job_labels  => $scrape_job_labels,
     bin_name           => $bin_name,
-    archive_bin_path   => "/opt/dellhw_exporter-${version}.${os}-${arch}/dellhw_exporter",
+    archive_bin_path   => "/opt/dellhw_exporter-${version}.${os_type}-${arch}/dellhw_exporter",
     proxy_server       => $proxy_server,
     proxy_type         => $proxy_type,
   }

@@ -27,7 +27,7 @@
 #  Should puppet manage the service? (default true)
 # @param manage_user
 #  Whether to create user or rely on external code for that
-# @param os
+# @param os_type
 #  Operating system (linux is the only one supported)
 # @param package_ensure
 #  If package, then use this for package ensure default 'latest'
@@ -90,7 +90,7 @@ class prometheus::nginx_prometheus_exporter (
   Optional[String[1]] $proxy_server                          = undef,
   Optional[Enum['none', 'http', 'https', 'ftp']] $proxy_type = undef,
 ) inherits prometheus {
-  $real_download_url    = pick($download_url,"${download_url_base}/download/v${version}/${package_name}_${version}_${os}_${arch}.${download_extension}")
+  $real_download_url    = pick($download_url,"${download_url_base}/download/v${version}/${package_name}_${version}_${os_type}_${arch}.${download_extension}")
   $notify_service = $restart_on_change ? {
     true    => Service[$service_name],
     default => undef,
@@ -104,7 +104,7 @@ class prometheus::nginx_prometheus_exporter (
     # nginx_prometheus_exporter lacks currently as of version 0.9.0
     # TODO: patch prometheus::daemon to support custom extract directories
     $real_install_method = 'none'
-    $install_dir = "/opt/${package_name}-${version}.${os}-${arch}"
+    $install_dir = "/opt/${package_name}-${version}.${os_type}-${arch}"
     file { $install_dir:
       ensure => 'directory',
       owner  => 'root',

@@ -21,7 +21,7 @@
 #  Prometheus release
 # @param install_method
 #  Installation method: url or package (only url is supported currently)
-# @param os
+# @param os_type
 #  Operating system (linux is supported)
 # @param download_url
 #  Complete URL corresponding to the Prometheus release, default to undef

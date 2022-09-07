@@ -25,7 +25,7 @@
 #  Should puppet manage the service? (default true)
 # @param manage_user
 #  Whether to create user or rely on external code for that
-# @param os
+# @param os_type
 #  Operating system (linux is the only one supported)
 # @param package_ensure
 #  If package, then use this for package ensure default 'latest'
@@ -65,7 +65,7 @@ class prometheus::pushgateway (
   Boolean $manage_group                                      = true,
   Boolean $manage_service                                    = true,
   Boolean $manage_user                                       = true,
-  String[1] $os_type                                         = $prometheus::os,
+  String[1] $os_type                                         = $prometheus::os_type,
   Optional[String[1]] $extra_options                         = undef,
   Optional[String] $download_url                             = undef,
   String[1] $arch                                            = $prometheus::real_arch,
@@ -80,7 +80,7 @@ class prometheus::pushgateway (
   else {
     $release = $version
   }
-  $real_download_url = pick($download_url,"${download_url_base}/download/${release}/${package_name}-${version}.${os}-${arch}.${download_extension}")
+  $real_download_url = pick($download_url,"${download_url_base}/download/${release}/${package_name}-${version}.${os_type}-${arch}.${download_extension}")
   $notify_service = $restart_on_change ? {
     true    => Service[$service_name],
     default => undef,

@@ -31,7 +31,7 @@
 #  Whether to create user or rely on external code for that
 # @param modules
 #  Hash of SSL exporter modules
-# @param os
+# @param os_type
 #  Operating system (linux is the only one supported)
 # @param package_ensure
 #  If package, then use this for package ensure default 'latest'
@@ -91,7 +91,7 @@ class prometheus::ssl_exporter (
   Optional[String[1]] $proxy_server                          = undef,
   Optional[Enum['none', 'http', 'https', 'ftp']] $proxy_type = undef,
 ) inherits prometheus {
-  $real_download_url = pick($download_url,"${download_url_base}/download/v${version}/${package_name}_${version}_${os}_${arch}.${download_extension}")
+  $real_download_url = pick($download_url,"${download_url_base}/download/v${version}/${package_name}_${version}_${os_type}_${arch}.${download_extension}")
 
   $notify_service = $restart_on_change ? {
     true    => Service[$service_name],
@@ -113,7 +113,7 @@ class prometheus::ssl_exporter (
   ], ' ')
 
   # SSL exporter is not packaged into a directory
-  $extract_path = "/opt/${service_name}-${version}.${os}-${arch}"
+  $extract_path = "/opt/${service_name}-${version}.${os_type}-${arch}"
   file { $extract_path:
     ensure => 'directory',
     owner  => 'root',

@@ -37,7 +37,7 @@ class prometheus::server (
   Optional[String[1]] $extra_options                                            = $prometheus::extra_options,
   Hash $config_hash                                                             = $prometheus::config_hash,
   Hash $config_defaults                                                         = $prometheus::config_defaults,
-  String[1] $os_type                                                            = $prometheus::os,
+  String[1] $os_type                                                            = $prometheus::os_type,
   Optional[String] $download_url                                                = $prometheus::download_url,
   String[1] $arch                                                               = $prometheus::real_arch,
   Boolean $manage_group                                                         = $prometheus::manage_group,
@@ -52,10 +52,10 @@ class prometheus::server (
 ) inherits prometheus {
   if( versioncmp($version, '1.0.0') == -1 ) {
     $real_download_url = pick($download_url,
-    "${download_url_base}/download/${version}/${package_name}-${version}.${os}-${arch}.${download_extension}")
+    "${download_url_base}/download/${version}/${package_name}-${version}.${os_type}-${arch}.${download_extension}")
   } else {
     $real_download_url = pick($download_url,
-    "${download_url_base}/download/v${version}/${package_name}-${version}.${os}-${arch}.${download_extension}")
+    "${download_url_base}/download/v${version}/${package_name}-${version}.${os_type}-${arch}.${download_extension}")
   }
   $notify_service = $restart_on_change ? {
     true    => Service[$service_name],

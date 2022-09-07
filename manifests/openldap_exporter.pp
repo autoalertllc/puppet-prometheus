@@ -24,7 +24,7 @@
 #  Should puppet manage the service? (default true)
 # @param manage_user
 #  Whether to create user or rely on external code for that
-# @param os
+# @param os_type
 #  Operating system (linux is the only one supported)
 # @param package_ensure
 #  If package, then use this for package ensure default 'latest'
@@ -85,9 +85,9 @@ class prometheus::openldap_exporter (
   $release = "v${version}"
   if versioncmp($version, '2.2.1') >= 0 {
     $real_download_extension = 'gz'
-    $real_download_url = pick($download_url,"${download_url_base}/download/${release}/${package_name}-${os}-${prometheus::real_arch}.gz")
-    $extract_path = "/opt/openldap_exporter-${version}.${os}-${prometheus::real_arch}"
-    $archive_bin_path = "${extract_path}/openldap_exporter-${os}-${prometheus::real_arch}"
+    $real_download_url = pick($download_url,"${download_url_base}/download/${release}/${package_name}-${os_type}-${prometheus::real_arch}.gz")
+    $extract_path = "/opt/openldap_exporter-${version}.${os_type}-${prometheus::real_arch}"
+    $archive_bin_path = "${extract_path}/openldap_exporter-${os_type}-${prometheus::real_arch}"
     $extract_command = "gzip -cd %s > ${archive_bin_path}"
     file { $extract_path:
       ensure => 'directory',
@@ -98,7 +98,7 @@ class prometheus::openldap_exporter (
     }
   } else {
     $real_download_extension = $download_extension
-    $real_download_url = pick($download_url,"${download_url_base}/download/${release}/${package_name}-${os}")
+    $real_download_url = pick($download_url,"${download_url_base}/download/${release}/${package_name}-${os_type}")
     $extract_path = undef
     $extract_command = undef
     $archive_bin_path = undef

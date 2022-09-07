@@ -31,7 +31,7 @@
 #  Should puppet manage the service? (default true)
 # @param manage_user
 #  Whether to create user or rely on external code for that
-# @param os
+# @param os_type
 #  Operating system (linux is the only one supported)
 # @param package_ensure
 #  If package, then use this for package ensure default 'latest'
@@ -101,7 +101,7 @@ class prometheus::consul_exporter (
     fail("I only support consul_exporter version '0.3.0' or higher")
   }
 
-  $real_download_url = pick($download_url,"${download_url_base}/download/v${version}/${package_name}-${version}.${os}-${arch}.${download_extension}")
+  $real_download_url = pick($download_url,"${download_url_base}/download/v${version}/${package_name}-${version}.${os_type}-${arch}.${download_extension}")
 
   if $consul_health_summary {
     if versioncmp ($version, '0.4.0') == -1 {
