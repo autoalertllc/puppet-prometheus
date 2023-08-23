@@ -21,7 +21,7 @@
 #  Prometheus release
 # @param install_method
 #  Installation method: url or package (only url is supported currently)
-# @param os
+# @param os_type
 #  Operating system (linux is supported)
 # @param download_url
 #  Complete URL corresponding to the Prometheus release, default to undef
@@ -291,7 +291,7 @@ class prometheus (
   Hash $extra_alerts                                                            = {},
   Hash $config_hash                                                             = {},
   Hash $config_defaults                                                         = {},
-  String[1] $os                                                                 = downcase($facts['kernel']),
+  String[1] $os_type                                                            = downcase($facts['kernel']),
   Optional[Variant[Stdlib::HTTPUrl, Stdlib::Unixpath, String[1]]] $external_url = undef,
   Array[Hash[String[1], Any]] $collect_scrape_jobs                              = [],
   Optional[String[1]] $collect_tag                                              = undef,
